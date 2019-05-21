@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>TodoList组件拆分</title>
+	<script src="./vue.js"></script>
+</head>
+<body>
+	<!-- 
+	    组件与实例的关系：组件 实例都是Vue的实例。
+		没有定义template属性的实例，默认模板就是他的挂载点。
+	 -->
+
+	 
+	<div id="root">
+		<input v-model="inputValue"/>
+		<button @click="handleSubmit">提交</button>
+
+		<ul>
+			<!--  :content="item"   向组件内传递content属性，响应的组件内部应该要接收一下 -->
+			<todo-item
+			 v-for="(item,index) of list"
+			  :key="index"
+			  :content="item"
+			></todo-item>
+		</ul>
+	</div>
+	<script>
+		// 全局组件
+		// Vue.component('todo-item',{    // Vue.component定义组件(全局组件)，template定义组件的内容
+		// 	template: "<li>item</li>"
+		// })
+
+		// 局部组件  定义的局部组件需要在要使用的Vue实例中最外层的地方做一个组件声明。全局组件不需要声明。
+		var TodoItem = {
+			props: ['content'],  // 接收外部实例传递进来的名字叫 content 的属性
+			template: '<li>{{content}}}</li>'  //使用传递进来的 content
+		}
+
+		new Vue({
+			el: "#root",
+			components: {
+				'todo-item': TodoItem
+			},
+			data: {
+				inputValue: '',
+				list: []
+			},
+			methods: {
+				handleSubmit: function(){
+					if(this.inputValue){
+						this.list.push(this.inputValue);
+						this.inputValue = "";
+					}
+				}
+			}
+		})
+	</script>
+</body>
+</html>

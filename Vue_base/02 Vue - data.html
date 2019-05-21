@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>数据、事件、方法</title>
+	<script src="./vue.js"></script>
+</head>
+<body>
+	<!-- 注释，事件，方法 -->
+	<!-- 
+		事件定义在Vue实例里面的methods对象里面
+	 -->
+
+	<div id="root">
+		<h1>{{number}}</h1>
+		<h1 v-text="number"></h1>
+		<div v-text="content"></div>
+		<div v-html="content"></div>
+
+		<!-- click事件 -->
+		<!-- <div v-on:click="handleClick">{{clickEvent}}</div> -->
+		<div @click="handleClick">{{clickEvent}}</div>
+	</div>
+
+	<script>
+		new Vue({
+			el:"#root",
+			data: {
+				msg: "hello world",
+				number: 123,
+				content: "<h1>hello</h1>",
+				clickEvent: "(clickHere)"
+			},
+			methods: {
+				handleClick: function(){
+					this.clickEvent = "呦吼";
+				}
+			}
+		})
+	</script>
+</body>
+</html>

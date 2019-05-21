@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>practice</title>
+	<script src="./vue.js"></script>
+</head>
+
+<!-- v-model -->
+<!-- <body>
+	<div id="wrap">
+		<h1>{{message}}</h1>
+		姓名：<input type="text" name="name" v-model.lazy="name"/>{{name}}<br>  
+		男<input type="radio" name="sex" value="female" v-model="sex">
+		女<input type="radio" name="sex" value="male" v-model="sex">{{sex}}<br>
+		年龄：<input type="text" name="age" v-model.trim="age">{{age}}<br>
+
+		lazy:输入完成后（失去焦点）再更新
+		trim:去掉用户输入的字符串的前后空格
+		number:转换成数字类型
+		v-model可以在input  textarea  select上使用
+
+		<span>你来自哪里？</span>
+		<select v-model="from">
+			<option value="1">北京</option>
+			<option value="2">上海</option>
+			<option value="3">广州</option>
+		</select>
+		{{from}}<br>
+		<span>你要去哪里？</span>
+		<select v-model="dest" multiple>
+			<option value="1">北京</option>
+			<option value="2">上海</option>
+			<option value="3">广州</option>
+			<option value="4">北京</option>
+			<option value="5">上海</option>
+			<option value="6">广州</option>
+		</select>
+		{{dest}}
+	</div>
+</body>
+<script>
+	new Vue({
+		el:'#wrap',
+		data:{
+			message:"hello",
+			name:"花花",
+			sex:null,
+			age:18,
+			from: 2,
+			dest: []
+		}
+	});
+</script> -->
+
+<!-- v-bind v-on -->
+<!-- <body>
+	<div id="root">
+		{{message}}<br>
+		<input type="text" name="sex" :value="sex">{{sex}}<br>
+		<button v-on="{mouseenter:onEnter, mouseleave:onLeave, click:onClick}">Here</button>
+		<form v-on:submit="onSubmit($event)">
+			<input type="text" name="text">
+			<button type="submit">提交</button>
+		</form>
+		<form v-on:keyup="keyPressed" v-on:keyup.enter="onEnter" v-on:submit.prevent="onSubmit()">
+			<input type="text" name="text">
+			<button type="submit">提交</button>
+		</form>
+	</div> 
+</body>
+<script type="text/javascript">
+	new Vue({
+		el:"#root",
+		data:{
+			message:"hello",
+			sex:"male"
+		},
+		methods:{
+			onEnter: function(){
+				console.log("mouseEnter");
+			},
+			onLeave: function(){
+				console.log("mouseLeave");
+			},
+			onClick: function(){
+				alert("Yo.");
+			},
+			onSubmit: function(){
+				// e.preventDefault();
+				console.log("submit");
+			},
+			keyPressed: function(){
+				console.log("keypressed");
+			},
+			onEnter: function(){
+				console.log("onenter");
+			}
+		}
+	});
+</script> -->
+
+<!-- 动态绑定CSS样式（class） -->
+<!-- <style type="text/css">
+	.changeImg{
+		width: 100px;
+		height: 200px;
+		background-color: red;
+	}
+</style>
+<div id="app">
+	<button @click="onclick">click</button>
+	<div v-bind:class="{changeImg:changeImg}"></div>
+</div>
+<script>
+	new Vue({
+		el:'#app',
+		data:{
+			changeImg: false
+		},
+		methods:{
+			onclick:function(){
+				this.changeImg = !this.changeImg;
+				console.log('hello');
+			}
+		}
+	})
+</script> -->
+
+<!-- v-for -->
+<!-- <div id="app">
+	<li v-for="food in foodList">
+		{{food.name}}: ￥{{food.discount?food.price * food.discount:food.price}}
+	</li>
+</div>
+<script>
+	new Vue({
+		el:"#app",
+		data:{
+			// foodList:['apple', 'pear', 'banana'],
+			foodList:[{
+				name:'葱',
+				price:10,
+				discount:.8
+			},
+			{
+				name:'姜',
+				price:30,
+				discount:.8
+			},
+			{
+				name:'蒜',
+				price:20,
+
+			}
+			],
+		}
+	})
+</script> -->
+
+<!-- v-if 控制流指令 -->
+<!-- <div id="app">
+	<div v-if="role=='admin'||role=='super_admin'">
+		管理员你好
+	</div>
+	<div v-else-if="role=='hr'">
+		待查看简历列表：<br>
+	</div>
+	<div v-else>
+		您没有权限访问此页面
+	</div>
+</div>
+<script>
+	var app = new Vue({
+		el:"#app",
+		data:{
+			role:'hr'
+		}
+	})
+</script> -->
+
+<!-- 计算属性  computed会将计算结果缓存下来，提升性能；methods 每次都会重新执行 -->
+<!-- <div id="app">
+	<table border="1">
+		<thead>
+			<th>学科</th>
+			<th>分数</th>
+		</thead>
+		<tbody>
+			<tr>
+				<td>数学</td>
+				<td><input type="text" v-model.number="math"></td>
+			</tr>
+			<tr>
+				<td>物理</td>
+				<td><input type="text" v-model.number="physics"></td>
+			</tr>
+			<tr>
+				<td>英语</td>
+				<td><input type="text" v-model.number="english"></td>
+			</tr>
+			<tr>
+				<td>总分</td>
+				<td>{{sum}}</td>
+			</tr>
+			<tr>
+				<td>平均分 </td>
+				<td>{{average}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<script>
+	new Vue({
+		el:"#app",
+		data:{
+			math:100,
+			physics:90,
+			english:70
+		},
+		computed:{
+			sum:function(){
+				return this.math+this.physics+this.english;
+			},
+			average:function(){
+				return Math.round(this.sum/3);
+			}
+		}
+	})
+</script> -->
+
+<!-- 公共（全局）组件 -->
+<!-- <body>
+	 <div id="seg1">
+	 	<alert></alert>
+	 	<alert></alert>
+	 </div>
+	 <div id="seg2">
+	 	<alert></alert>
+	 </div>
+</body>
+<script>
+	// 公共组件
+	Vue.component('alert',{
+		template:'<button @click="on_click">弹弹弹</button>',
+		methods:{
+			on_click:function(){
+				alert('Yo.');
+			}
+		}
+	})
+
+	new Vue({
+		el:'#seg1'
+	})
+
+	new Vue({
+		el:'#seg2'
+	})
+</script> -->
+
+<!-- 局部组件 -->
+<!-- <body>
+	 <div id="seg1">
+	 	<alert></alert>
+	 	<alert></alert>
+	 </div>
+	 <div id="seg2">
+	 	<alert></alert>
+	 </div>
+</body>
+<script>
+	// 局部组件
+	new Vue({
+		el:'#seg1',
+		components:{
+			alert:{
+				template:'<button @click="on_click">弹弹弹</button>',
+				methods:{
+					on_click:function(){
+						alert('Yo.');
+					}
+				}
+			}
+		}
+	})
+	new Vue({
+		el:'#seg2'
+	})
+</script> 
+<script>
+	// 局部组件 -- 封装
+	var Alert = {
+		template:'<button @click="on_click">弹弹弹</button>',
+		methods:{
+			on_click:function(){
+				alert('Yo.');
+			}
+		}
+	}
+	new Vue({
+		el:'#seg1',
+		components:{
+			alert: Alert
+		}
+	})
+	new Vue({
+		el:'#seg2'
+	})
+</script> -->
+
+<!-- 点赞 -->
+<!-- <head>
+	<style type="text/css">
+		.liked{
+			background: deeppink;
+		}
+	</style>
+</head>
+<div id="app">
+	<like></like>
+</div>
+<script>
+	Vue.component('like',{
+		template:'<button :class="{liked: liked}" @click="toggle_like()">赞 {{like_count}}</button>',
+		data:function(){
+			return {
+				like_count:10,
+				liked: false,
+			}
+		},
+		methods:{
+			toggle_like:function(){
+				if(!this.liked){
+					this.like_count++;
+				}else{
+					this.like_count--;
+				}
+				this.liked = !this.liked;
+			}
+		}
+	})
+
+	new Vue({
+		el:'#app',
+	})
+</script> -->
+
+<!-- 组件通信之父子通信 1 -->
+<!--  <div id="app">
+ 	<alert msg="Yooooo."></alert>
+ </div>
+ <script>
+ 	Vue.component('alert',{
+ 		template:'<button @click="on_click()">弹弹弹</button>',
+ 		props:['msg'],  //props数组里面是你需要传进来的东西。相当于形参，但是和DOM中定义的变量的名称要一样。
+ 		methods:{
+ 			on_click:function(){
+ 				alert(this.msg);
+ 			}
+ 		}
+ 	});
+ 	new Vue({
+ 		el:'#app',
+ 	});
+ </script> -->
+ <!-- 组件通信之父子通信 2 - 点击用户姓名链接跳转 -->
+<!--  <div id="app">
+ 	<user username="wkk"></user>
+ </div>
+ <script>
+ 	Vue.component('user',{
+ 		template:'<a :href="\'/user/\'+username">{{username}}</a>',
+ 		props:['username'],  //props数组里面是你需要传进来的东西。相当于形参，但是和DOM中定义的变量的名称要一样。
+ 	});
+ 	new Vue({
+ 		el:'#app',
+ 	});
+ </script> -->
+
+<!-- 组件通信之子父通信 - 子组件怎么与父级组件通话 -->
+<!-- 子组件点击显示余额，父级组件负责显示 -->
+<!-- <div id="app">
+	<balance></balance>
+</div>
+<script>
+	// 父级组件
+	// Vue.component('balance',{
+	// 	template:`
+	// 	<div>
+	// 	    <show @show-balance="show_balance = true"></show>
+	// 	    <div v-if="show_balance">您的余额：￥98</div>
+	// 	</div>
+	// 	`,
+	// 	data: function(){
+	// 		return {
+	// 			show_balance:false,
+	// 		}
+	// 	}
+	// });
+	// 父级组件改进
+	Vue.component('balance',{
+		template:`
+		<div>
+		    <show @show-balance="show_balance"></show>
+		    <div v-if="show">您的余额：￥98</div>
+		</div>
+		`,
+		methods:{
+			show_balance:function(data){
+				this.show = true;
+				console.log('data: ',data);
+			}
+		},
+		data: function(){
+			return {
+				show: false,
+			}
+		}
+	});
+	// 子组件
+	// show 是子组件，balance 是父组件，子组件通过自定义事件向父组件传值
+	Vue.component('show',{
+		template:'<button @click="on_click()">显示余额</button>',
+		methods:{
+			on_click(){
+				// $emit相当于jQuery里的trigger，用于触发一个事件的快捷方式。
+				// 触发的事件可以在子元素（<show>）上监听
+				this.$emit('show-balance', {a:1,b:2});
+			}
+		} 
+	});
+	new Vue({
+		el:'#app',
+	})
+</script> -->
+
+<!-- 组件通信之任意及平行组件间通信 -->
+<!-- 花花说 明明显示 -->
+<!-- <div id="app">
+	<huahua></huahua>
+	<mingming></mingming>
+</div>
+<script>
+	var Event = new Vue();
+	Vue.component('huahua',{
+		template:`
+		<div>
+			我说：<input @keyup="on_change" v-model="i_said" />
+		</div>
+		`,
+		data:function(){
+			return {
+				i_said:'',
+			}
+		},
+		methods:{
+			on_change:function(){
+				Event.$emit('huahua-said-something', this.i_said);
+			}
+		}
+	});
+	Vue.component('mingming',{
+		template:'<div>花花说：{{huahua_said}}</div>',
+		data: function(){
+			return {
+				huahua_said:'',
+			}
+		},
+		mounted:function(){
+			var me = this;
+			Event.$on('huahua-said-something', function(data){
+				// console.log('this:',this);
+				me.huahua_said = data;
+			})
+		}
+	});
+	new Vue({
+		el:'#app',
+	});
+</script> -->
+
+<!-- 过滤器 -->
+<!-- <div id="app">
+	<div>
+		<input type="text" v-model="length">
+		{{length | meter}}
+	</div>
+	<hr>
+	<div>
+		<input type="text" v-model="price">
+		{{ price | currency("USD") }}
+	</div>
+</div>
+<script>
+	// 较为复杂时建议使用计算属性（带有缓存）。filter适用于计算处理较为简单的逻辑。
+	Vue.filter('meter', function(val, unit){
+		val = val || 0;
+		unit = unit || 'm';
+		return (val / 1000).toFixed(2) + unit;
+	});
+	Vue.filter('currency', function(val, unit){
+		val = val || 0;
+		unit = unit || '元';
+		return val + unit;
+	});
+	new Vue({
+		el:'#app',
+		data:{
+			price: 10,
+			length: 10
+		}
+	})
+</script> -->
+
+<!-- 自定义指令 -->
+<!-- <style type="text/css">
+	.card{
+		width: 250px;
+		background-color: #ccc;
+		margin: 30px 20px;
+		padding: 10px;
+	}
+</style>
+<div id="app">
+	<div v-pin="card1.pinned" class="card">
+		<button @click="card1.pinned=!card1.pinned">钉住/取消</button>
+		Lorem ipsum dolor sit amet, consectetur adipisicing qwertyuiasdfghjklzxcvbnm
+	</div>
+	<div v-pin="card2.pinned" class="card">
+		<a href="#" @click="card2.pinned=!card2.pinned">pin it</a>
+		Lorem ipsum dolor sit amet, consectetur adipisicing
+	</div>
+	<div>
+		<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat. Duis aute irure dolor<br> in reprehenderit in voluptate velit esse
+		cillum dolore eu fugiat nulla pariatur.<br> Excepteur sint occaecat cupidatat non
+		proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+		<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco<br> laboris nisi ut aliquip ex ea commodo
+		consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+		cillum dolore eu fugiat nulla pariatur.<br> Excepteur sint occaecat cupidatat non
+		proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+		<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua.<br> Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat.<br> Duis aute irure dolor<br> in reprehenderit in voluptate velit esse
+		cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+		proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+		<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et<br> dolore magna aliqua.<br> Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+		cillum dolore eu fugiat nulla<br> pariatur. Excepteur sint occaecat cupidatat non
+		proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+		<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua.<br> Ut enim ad minim veniam,
+		quis nostrud<br> exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat. Duis aute irure dolor<br> in reprehenderit in voluptate velit esse
+		cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+		proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+		<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco <br>laboris nisi ut aliquip ex ea commodo
+		consequat.<br> Duis aute irure dolor in reprehenderit in voluptate velit esse
+		cillum dolore eu fugiat nulla pariatur.<br> Excepteur sint occaecat cupidatat non
+		proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+		<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et<br> dolore magna aliqua.<br> Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+		cillum dolore eu fugiat nulla<br> pariatur. Excepteur sint occaecat cupidatat non
+		proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+		<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua.<br> Ut enim ad minim veniam,
+		quis nostrud<br> exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat. Duis aute irure dolor<br> in reprehenderit in voluptate velit esse
+		cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+		proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+		<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco <br>laboris nisi ut aliquip ex ea commodo
+		consequat.<br> Duis aute irure dolor in reprehenderit in voluptate velit esse
+		cillum dolore eu fugiat nulla pariatur.<br> Excepteur sint occaecat cupidatat non
+		proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+	</div>
+</div>
+<script>
+	// 自定义的指令(属性)前要加v-，但是Vue.directive中，不用加。
+    // Vue.directive('pin', function(会自动传过来pin所在的那个element元素, 传进来的值及其他的一些基本信息){}
+	Vue.directive('pin', function(el, binding){
+		var pinned = binding.value;
+		// console.log('pinned:', pinned);  // pinned:true  pinned:false
+		if(pinned){
+			el.style.position = 'fixed';
+			el.style.top = '10px';
+			el.style.left = '10px';
+		}else{
+			el.style.position = 'static';
+		}
+	})
+	new Vue({
+		el:'#app',
+		data:{
+			card1:{
+				pinned: false,
+			},
+			card2:{
+				pinned: false,
+			}
+		}
+	})
+</script> -->
+
+<!--  -->
+</html>

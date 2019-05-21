@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>v-if,v-show,v-for指令</title>
+	<script src="./vue.js"></script>
+</head>
+<body>
+	<!-- v-if控制DOM的存在与否，v-show控制DOM的显示与否，v-for控制一组数据,循环显示在DOM中 -->
+
+
+	<div id="root">
+
+		<!-- v-if 对应的元素数据项的值为false时，会直接把元素从DOM树中移除 -->
+		<div v-if="show">hello world</div>
+
+		<!-- 
+			v-show 对应的元素数据项的值为false时，标签会被隐藏，即会给元素设置display:none;
+			如果频繁操作该DOM节点，使用v-show更好点。只操作一次，使用v-if好一点。
+		 -->
+		<div v-show="show">hello world</div>
+
+		<button @click="handleClick">toggle</button>
+
+		<!-- 
+			v-for="item of list" 循环展示list，每一次循环将值放到item变量中。
+
+			:key 可以提升每一项渲染的性能，key值要求每一次的值都必须不同；
+			如果item中的值有重复值，那么可以写成：
+			<li v-for="(item, index) of list" :key="index">{{item}}</li>
+			item为数据项，index为该数据项下标，每一项index肯定不同。
+
+			如果频繁对列表进行变更操作，index作为key会出现问题的。
+		 -->
+		<ul>
+			<li v-for="item of list" :key="item">{{item}}</li>
+		</ul>
+	</div>
+
+	<script>
+		new Vue({
+			el:"#root",
+			data: {
+				show: true,
+				list: [1,2,3]
+			},
+			methods: {
+				handleClick: function(){
+					this.show = !this.show;  //取反
+				}
+			}
+		})
+	</script>
+</body>
+</html>

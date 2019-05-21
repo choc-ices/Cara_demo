@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Vue入门</title>
+	<script src="./vue.js"></script>
+</head>
+<body>
+	<!-- 挂载点，模板，实例之间的关系 -->
+	<!-- 
+		挂载点：id="root"的div标签就是Vue实例的挂载点
+		       Vue实例只会处理其相对应挂载点下面的内容
+
+		模板：#root里面的<h1>hello {{msg}}</h1>，或者Vue实例里面的template
+		     即模板就为挂载点里面的内容
+
+		实例：指定挂载点，结合模板和数据生成最终要展示的内容，并展示在挂载点之中
+	 -->
+
+	<div id="root">
+		<!-- <h1>hello {{msg}}</h1> -->
+	</div>
+
+	<script>
+		new Vue({  //创建一个Vue实例
+			el:"#root",  //el和HTML标签绑定
+			template:"<h1>hello {{msg}}</h1>",
+			data:{
+				msg: "hello world"  //msg和标签里面的内容绑定
+			}
+		})
+	</script>
+</body>
+</html>

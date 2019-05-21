@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>TodoList删除功能</title>
+	<script src="./vue.js"></script>
+</head>
+<body>
+
+<!-- 重点：父子组件的交互
+	父组件通过属性的形式向子组件传递数据；
+	子组件通过发布订阅模式向父组件传递数据，子组件发布一个事件，父组件恰好之前已经订阅了这个事件。
+ -->
+
+
+	<!-- #root div 为父组件对应的模板 ，里面会显示list里面的数据 -->
+	<div id="root">
+		<input v-model="inputValue"/>
+		<button @click="handleSubmit">提交</button>
+
+		<ul>
+			<!-- 1. Vue中 父组件给子组件传值，是通过属性的形式传递的，:content="item"模板里面要显示的内容 -->
+			<!-- 8. @delete="handleDelete" 监听子组件向外触发的delete事件，监听到了 执行handleDelete函数 -->
+			<todo-item
+			 v-for="(item,index) of list"
+			  :key="index"
+			  :content="item"
+			  :index="index"
+			  @delete="handleDelete"
+			></todo-item>
+		</ul>
+	</div>
+	<script>
+		// 全局组件
+		Vue.component('todo-item',{
+			props: ["content", 'index'],       // 2. 子组件接收这个内容，在子组件的模板上显示  // 5. 从父组件还可以接收到下标
+			template: '<li @click="handleClick">{{content}}</li>',
+			methods: {    // 4. 要实现子组件与父组件的通信，需要用到发布订阅模式，子组件告诉父组件删除掉对应数据。
+				handleClick: function(){
+					// 6. 当子组件被点击时通知父组件将数据删除掉
+					this.$emit('delete', this.index);  // 7. 子组件向外进行发布
+				}
+			}
+		})
+
+		new Vue({
+			el: "#root",
+			data: {
+				inputValue: '',
+				// 3. 子组件显示与否，取决于父组件里list里面的数据。
+				// 如果想实现子组件的删除，必须在父组件里面把渲染子组件对应的数据删除掉。
+				list: []
+			},
+			methods: {
+				handleSubmit: function(){
+					if(this.inputValue){
+						this.list.push(this.inputValue);
+						this.inputValue = "";
+					}
+				},
+				handleDelete: function(index){
+					// alert(index);
+					this.list.splice(index,1);    // 删除index对应的数据项
+				}
+			}
+		})
+	</script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>属性绑定和双向数据绑定</title>
+	<script src="./vue.js"></script>
+</head>
+<body>
+
+	<div id="root">
+		<!-- 属性绑定 -->
+		<div v-bind:title="'dell lee ' + title">hello</div>
+		<div :title="title">World</div>
+
+
+		<!-- 双向数据绑定 -->
+
+		<!-- 
+			单向绑定：数据决定了页面的显示，但是页面无法决定数据里的内容
+			<input :value="content"/>
+
+			单向：v-bind
+			双向：v-model
+
+		 -->
+
+		<!-- <input :value="content"/> -->  <!-- 单向 -->
+		<input v-model="content"/>  <!-- 双向 -->
+		<div>{{content}}</div>
+	</div>
+	<script>
+		new Vue({
+			el:"#root",
+			data: {
+				content: "this is content",
+				title: "this is hello world"
+			}
+		})
+	</script>
+</body>
+</html>
