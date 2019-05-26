@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>practice</title>
+	<script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		<!-- <p>{{msg | msgFormat}}</p> -->
+		<!-- 可以多个过滤器叠加使用，按顺序依次处理 -->
+		<p>{{msg | msgFormat('从前') | test}}</p>
+	</div>
+
+	<script>
+		// 过滤器
+		// Vue.filter('过滤器的名称',function(){});
+		// 过滤器中function中第一个参数，已经被规定死了，永远都是过滤器管道符前面传递过来的数据
+		// Vue.filter('过滤器的名称',function(){
+		// 	return data + '123'
+		// });
+
+
+		// 定义一个Vue的全局过滤器
+		Vue.filter('msgFormat',function(msg, arg){
+			// return msg.replace('曾经','以前');  // 只匹配了第一个词
+			// 字符串的replace方法，第一个参数，除了可以写一个字符串之外，还可以定义一个正则
+			// return msg.replace(/曾经/g, '以前');
+			return msg.replace(/曾经/g, arg);  // 传值
+		});
+
+		Vue.filter('test', function(msg){
+			return msg + '========'
+		});
+		var vm = new Vue({
+			el:'#app',
+			data:{
+				msg:'我曾经跨过山和大海，也穿过人山人海，我曾经拥有着的一切，转眼都飘散如烟',
+			}
+		});
+	</script>
+</body>
+</html>
+	
