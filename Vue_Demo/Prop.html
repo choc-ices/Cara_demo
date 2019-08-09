@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>父子组件传值 Prop</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="root">
+	<counter :count="1" @inc="handleIncrease"></counter>
+	<counter :count="2" @inc="handleIncrease"></counter>
+	<div>{{total}}</div>
+</div>
+
+<script type="text/javascript">
+	// 1、父组件可以随意的向子组件传递参数，但是子组件不能修改传递过来的参数
+	// 如果传递的是对象，子组件修改可能会改变父组件中其他地方使用的该对象的值
+	/*var counter = {
+		// props接受子组件传递过来的
+		props: ['count'],
+		template: '<div @click="handleClick">{{count}}</div>',
+		methods: {
+			handleClick: function(){
+				this.count ++;
+			}
+		}
+	}
+	*/
+
+	///2、如果真的需要修改，可以在子组件data中定义一个值拷贝一份。
+	var counter = {
+		// props接受子组件传递过来的
+		props: ['count'],
+		data: function(){
+			return{
+				number: this.count
+			}
+		},
+		template: '<div @click="handleClick">{{number}}</div>',
+		methods: {
+			handleClick: function(){
+				this.number = this.number + 2;
+				this.$emit('inc', 2);  // 子组件向外触发事件
+			}
+		}
+	}
+
+	var vm = new Vue({
+		el: '#root',
+		data: {
+			total: 5
+		},
+		components: {
+			// 注册局部组件
+			counter: counter
+		},
+		methods: {
+			handleIncrease(step){
+				// alert('inc');
+				this.total += step;
+			}
+		}
+	})
+
+	/*
+	父组件通过属性的形式向子组件传值；
+	子组件通过事件触发的形式向父组件传值。
+	父子组件传值，隐性规定：父组件可以随意的向子组件传递参数，但是子组件不能修改传递过来的参数，
+	           如果一定要修改，就拷贝一份出来，修改副本。
+	*/
+</script>
+</body>
+</html>
