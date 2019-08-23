@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>动态组件与v-once指令</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<!-- 点击按钮切换child-one 和 child-two -->
+<!-- <body>
+	<div id="root">
+		<child-one v-if="type ==='child-one'"></child-one>
+		<child-two v-if="type ==='child-two'"></child-two>
+		<button @click="handleBtnClick">change</button>
+	</div>
+	<script type="text/javascript">
+		Vue.component('child-one',{
+			template: '<div>child-one</div>'
+		})
+		Vue.component('child-two',{
+			template: '<div>child-two</div>'
+		})
+
+		var vm = new Vue({
+			el: '#root',
+			data: {
+				type: 'child-one'
+			},
+			methods: {
+				handleBtnClick: function(){
+					this.type = this.type === 'child-one'?'child-two':'child-one';
+				}
+			}
+		})
+	</script>
+</body> -->
+
+
+<!-- 动态组件的形式编写 -->
+<body>
+	<div id="root">
+		<component :is="type"></component>
+		<button @click="handleBtnClick">change</button>
+	</div>
+	<script type="text/javascript">
+		Vue.component('child-one',{
+			template: '<div>child-one</div>'
+		})
+		Vue.component('child-two',{
+			template: '<div>child-two</div>'
+		})
+
+		var vm = new Vue({
+			el: '#root',
+			data: {
+				type: 'child-one'
+			},
+			methods: {
+				handleBtnClick: function(){
+					this.type = this.type === 'child-one'?'child-two':'child-one';
+				}
+			}
+		})
+	</script>
+</body>
+
+<body>
+	<div id="root">
+		<child-one v-if="type ==='child-one'"></child-one>
+		<child-two v-if="type ==='child-two'"></child-two>
+		<button @click="handleBtnClick">change</button>
+	</div>
+	<script type="text/javascript">
+		Vue.component('child-one',{
+			template: '<div v-once>child-one</div>'
+		})
+		Vue.component('child-two',{
+			template: '<div v-once>child-two</div>'
+		})
+		// v-once可以提高一些静态内容的展示效率
+
+		var vm = new Vue({
+			el: '#root',
+			data: {
+				type: 'child-one'
+			},
+			methods: {
+				handleBtnClick: function(){
+					this.type = this.type === 'child-one'?'child-two':'child-one';
+				}
+			}
+		})
+	</script>
+</body>
+</html>

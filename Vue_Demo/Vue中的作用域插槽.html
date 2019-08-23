@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Vue中的作用域插槽</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<!-- <body>
+	<div id="root">
+		<child></child>
+	</div>
+	<script type="text/javascript">
+		Vue.component('child', {
+			data: function(){
+				return{
+					list:[1, 2, 3, 4]
+				}
+			},
+			template:`
+			<div>
+				<ul>
+					<li v-for="item of list">{{item}}</li>
+				</ul>
+			</div>
+			`
+		})
+
+		var vm = new Vue({
+			el: '#root'
+		})
+	</script>
+</body> -->
+
+<body>
+	<div id="root">
+		<child>
+			<template slot-scope="slotMSG">
+				<!-- <li>{{slotMSG.item}}</li> -->
+				<h1>{{slotMSG.item}}</h1>
+			</template>
+			<!-- 必须用template套起来 -->
+		</child>
+	</div>
+	<script type="text/javascript">
+		Vue.component('child', {
+			data: function(){
+				return{
+					list:[1, 2, 3, 4]
+				}
+			},
+			template:`
+			<div>
+				<ul>
+					<slot v-for="item of list" :item=item>{{item}}</slot>
+				</ul>
+			</div>
+			`
+			// child组件做一个列表项的循环，但是列表项的每一项怎么显示并不关心，具体怎么显示由外部告知
+		})
+
+		var vm = new Vue({
+			el: '#root'
+		})
+
+
+
+		/*
+			父组件调用子组件的时候，给子组件传了一个插槽，这个插槽叫作用域插槽，这个插槽必须以template开头和结尾；
+			并且这个插槽要声明，接收到的数据放到哪里（slot-scope="slotMSG"），还要告诉子组件一个模板的信息，接收到数据后怎么展示。
+		*/
+	</script>
+</body>
+</html>
